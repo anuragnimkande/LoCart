@@ -39,10 +39,10 @@
   
   .login-container {
     background: var(--gray);
-    padding: 45px;
+    padding: 50px;
     border-radius: 15px;
-    width: 360px;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); /* Soft gold glow */
+    width: 00px;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
     text-align: center;
     transition: 0.3s ease;
   }
@@ -73,8 +73,9 @@
     background: var(--darker);
     border: 1px solid var(--secondary);
     padding: 12px 15px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     border-radius: 10px;
+    width: 100%;
   }
   
   .input-group i {
@@ -83,13 +84,14 @@
     font-size: 16px;
   }
   
-  .input-group input {
+  .input-group input,
+  .input-group select {
     background: transparent;
     border: none;
     outline: none;
     color: var(--light);
     width: 100%;
-    font-size: 14px;
+    font-size: 15px;
   }
   
   .input-group input::placeholder {
@@ -132,7 +134,4 @@
     margin-top: 10px;
     font-size: 13px;
   }
-
-
-  
   

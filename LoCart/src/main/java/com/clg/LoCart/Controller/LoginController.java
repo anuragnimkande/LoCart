@@ -1,19 +1,38 @@
 package com.clg.LoCart.Controller;
 
 import com.clg.LoCart.Model.User;
+import com.clg.LoCart.Model.shopowner;
+import com.clg.LoCart.Repository.ShopOwnerRepository;
 import com.clg.LoCart.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Random;
 
 @Controller
 public class LoginController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ShopOwnerRepository shopownerrepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+
+
+    private boolean verified = false;
+    String generatedOtp = "";
 
     @GetMapping("/login")
     public String showLoginPage() {
@@ -30,17 +49,21 @@ public class LoginController {
             @RequestParam("username") String username,
             @RequestParam("password") String pass,
             @RequestParam("mobile") String mobile,
-            @RequestParam("email") String email
-    ) {
-        User user = new User();
-        user.setEmail(email);
-        user.setUsername(username);
-        user.setMobile(mobile);
-        user.setPassword(pass);
+            @RequestParam("email") String email,
+            Model model
+    )
+    {
 
-        userRepository.save(user);
 
-        return "redirect:/login";
+            User user = new User();
+            user.setEmail(email);
+            user.setUsername(username);
+            user.setMobile(mobile);
+            user.setPassword(pass);
+            userRepository.save(user);
+            return "redirect:/login";
+
+
     }
 
     @PostMapping("/login")
@@ -66,6 +89,70 @@ public class LoginController {
             model.addAttribute("alertType", "error");
             return "login";
         }
+    }
+
+
+
+
+
+    @GetMapping("/shopownerlogin")
+    public String showshopownerlogin()
+    {
+        return "shopownerlogin";
+    }
+
+    @GetMapping("/shopowner/register")
+    public String showshopregister()
+    {
+        return "shopownerregister";
+    }
+
+    @PostMapping("/registershop")
+    public String saveshopowner(
+            @RequestParam("shopName") String shopname,
+            @RequestParam("ownerName") String ownername,
+            @RequestParam("email") String email,
+            @RequestParam("latitude") String latitude,
+            @RequestParam("longitude") String longitutde,
+            @RequestParam("category") String category,
+            @RequestParam("shopImage") MultipartFile image,
+            @RequestParam("pass") String pass
+            ) throws IOException {
+
+        shopowner shopown = new shopowner();
+        shopown.setShopname(shopname);
+        shopown.setOwnername(ownername);
+        shopown.setEmail(email);
+        shopown.setLatitude(latitude);
+        shopown.setLongitude(longitutde);
+        shopown.setCategory(category);
+        shopown.setImage(image.getBytes());
+        shopown.setPassword(pass);
+
+        shopownerrepository.save(shopown);
+
+        return "redirect:/shopownerlogin";
+    }
+
+    @PostMapping("/shopowner/login")
+    public String loginshop(
+            @RequestParam("email") String email,
+            @RequestParam("password") String pass
+    )
+    {
+
+        shopowner shop = shopownerrepository.findByemail(email);
+
+
+            if(shop != null && pass.equals(shop.getPassword()))
+            {
+                return "index";
+            }
+
+
+
+        return "shopownerlogin";
+
     }
 
 }

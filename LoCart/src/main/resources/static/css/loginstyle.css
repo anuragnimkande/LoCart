@@ -41,7 +41,7 @@
     background: var(--gray);
     padding: 45px;
     border-radius: 15px;
-    width: 360px;
+    width: 600px;
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); /* Soft gold glow */
     text-align: center;
     transition: 0.3s ease;

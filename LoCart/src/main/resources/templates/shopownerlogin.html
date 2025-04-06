@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title>Locart | Login</title>
+  <title>Locart | Shop Owner Login</title>
 
   <!-- Linking local CSS -->
   <link rel="stylesheet" th:href="@{/css/loginstyle.css}" />
@@ -14,8 +16,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    /* Inline CSS for placing shop owner button at top-right */
-    .shop-owner-button {
+    /* Inline CSS for placing user login button at top-right */
+    .user-login-button {
       position: absolute;
       top: 20px;
       right: 20px;
@@ -31,29 +33,29 @@
 <body>
   <div class="background"></div>
 
-  <!-- 🌟 Shop Owner Login Button at Top Right -->
-  <a th:href="@{/shopownerlogin}" class="shop-owner-button">Login as Shop Owner</a>
+  <!-- 🔁 Back to User Login Button -->
+  <a th:href="@{/login}" class="user-login-button">Login as User</a>
 
   <div class="login-container">
     <h1 class="logo">LOCART</h1>
-    <p class="tagline">Shop Smarter. Shop Local.</p>
+    <p class="tagline">Shop Owner Login</p>
 
-    <!-- Login form -->
-    <form th:action="@{/login}" method="post">
+    <!-- Shop Owner Login form -->
+    <form th:action="@{/shopowner/login}" method="post">
       <div class="input-group">
-        <i class="fas fa-user"></i>
+        <i class="fas fa-envelope"></i>
         <input type="email" name="email" placeholder="Your Email" required />
       </div>
 
       <div class="input-group">
         <i class="fas fa-lock"></i>
-        <input type="password" name="pass" placeholder="Your Password" required />
+        <input type="password" name="password" placeholder="Your Password" required />
       </div>
 
       <button type="submit" class="btn">Sign In</button>
 
       <div class="links">
-        <p>New to Locart? <a th:href="@{/register}">Create an account</a></p>
+        <p>New shop? <a th:href="@{/shopowner/register}">Register your shop</a></p>
         <p><a href="#">Forgot your password?</a></p>
       </div>
     </form>

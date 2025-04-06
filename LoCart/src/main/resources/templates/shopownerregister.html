@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Locart | Register Shop</title>
+
+  <link rel="stylesheet" th:href="@{/css/loginstyle.css}" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="background"></div>
+
+  <div style="position: absolute; top: 20px; right: 20px;">
+    <a th:href="@{/shopownerlogin}" class="btn" style="padding: 6px 14px; font-size: 14px; background-color: #333; color: white; border-radius: 6px; text-decoration: none;">Back to Login</a>
+  </div>
+
+  <div class="login-container">
+    <h1 class="logo">LOCART</h1>
+    <p class="tagline">Register Your Local Shop</p>
+
+    <form th:action="@{/registershop}" method="post" enctype="multipart/form-data">
+      <div class="input-group">
+        <i class="fas fa-store"></i>
+        <input type="text" name="shopName" placeholder="Shop Name" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="ownerName" placeholder="Owner Name" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" placeholder="Email" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" name="latitude" id="latitude" placeholder="Latitude" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" name="longitude" id="longitude" placeholder="Longitude" required />
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <button type="button" class="btn" onclick="fetchLocation()">📍 Autofetch Location</button>
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-list"></i>
+        <select name="category" required>
+          <option value="" disabled selected>Select Shop Category</option>
+          <option>Grocery</option>
+          <option>Pharmacy</option>
+          <option>Clothing</option>
+          <option>Electronics</option>
+          <option>Bakery</option>
+          <option>Stationery</option>
+          <option>Hardware</option>
+          <option>Vegetable & Fruits</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-image"></i>
+        <input type="file" name="shopImage" accept="image/*" required />
+      </div>
+
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="pass" placeholder="Your Password" required />
+      </div>
+
+      <button type="submit" class="btn">Register Shop</button>
+    </form>
+  </div>
+
+  <!-- Location Script -->
+  <script>
+    function fetchLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          document.getElementById('latitude').value = position.coords.latitude;
+          document.getElementById('longitude').value = position.coords.longitude;
+        }, function(error) {
+          alert("Error fetching location: " + error.message);
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+  </script>
+</body>
+</html>
+s
