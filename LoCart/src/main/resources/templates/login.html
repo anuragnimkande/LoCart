@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>Locart | Login</title>
+
+  <!-- Linking local CSS -->
   <link rel="stylesheet" th:href="@{/css/loginstyle.css}" />
+
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
   <div class="background"></div>
@@ -14,6 +20,7 @@
     <h1 class="logo">LOCART</h1>
     <p class="tagline">Shop Smarter. Shop Local.</p>
 
+    <!-- Login form -->
     <form th:action="@{/login}" method="post">
       <div class="input-group">
         <i class="fas fa-user"></i>
@@ -22,12 +29,10 @@
 
       <div class="input-group">
         <i class="fas fa-lock"></i>
-        <input type="password" name="password" placeholder="Your Password" required />
+        <input type="password" name="pass" placeholder="Your Password" required />
       </div>
 
       <button type="submit" class="btn">Sign In</button>
-
-      <p class="error" th:if="${error}" th:text="${error}"></p>
 
       <div class="links">
         <p>New to Locart? <a th:href="@{/register}">Create an account</a></p>
@@ -35,5 +40,17 @@
       </div>
     </form>
   </div>
+
+  <!-- ✅ Popup message alert -->
+  <script th:if="${message != null}">
+    let message = '[[${message}]]';
+    let alertType = '[[${alertType}]]';
+
+    if (alertType === 'success') {
+      alert("✅ " + message);
+    } else {
+      alert("❌ " + message);
+    }
+  </script>
 </body>
 </html>
