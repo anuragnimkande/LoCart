@@ -3,9 +3,318 @@
 <head>
   <meta charset="UTF-8" />
   <title>Locart | Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Linking local CSS -->
   <link rel="stylesheet" th:href="@{/css/loginstyle.css}" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #D4AF37;      /* Gold */
+      --primary-light: #e8c96a;
+      --secondary: #A67C52;    /* Bronze */
+      --secondary-light: #c99d7a;
+      --accent: #7A9CC6;       /* Soft Blue */
+      --accent-light: #a5c1e6;
+      --dark: #121212;         /* Matte Black */
+      --darker: #0A0A0A;
+      --light: #F5F5F5;
+      --lighter: #FFFFFF;
+      --gray: #2A2A2A;
+      --gray-light: #3D3D3D;
+      --success: #4CAF50;
+      --warning: #FFA726;
+      --error: #F44336;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --gradient-light: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+    
+    body {
+      height: 100vh;
+      background: var(--dark);
+      color: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(166, 124, 82, 0.08), transparent 50%),
+        var(--dark);
+      z-index: -1;
+    }
+    
+    .background::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle at center, transparent 60%, rgba(212, 175, 55, 0.03) 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(212, 175, 55, 0.02) 0px,
+          rgba(212, 175, 55, 0.02) 1px,
+          transparent 1px,
+          transparent 15px
+        ),
+        repeating-linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.02) 0px,
+          rgba(212, 175, 55, 0.02) 1px,
+          transparent 1px,
+          transparent 15px
+        );
+      animation: grain 8s steps(10) infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-5%, -10%); }
+      20% { transform: translate(-15%, 5%); }
+      30% { transform: translate(7%, -25%); }
+      40% { transform: translate(-5%, 25%); }
+      50% { transform: translate(-15%, 10%); }
+      60% { transform: translate(15%, 0%); }
+      70% { transform: translate(0%, 15%); }
+      80% { transform: translate(3%, -35%); }
+      90% { transform: translate(-10%, 10%); }
+    }
+    
+    .login-container {
+      background: rgba(42, 42, 42, 0.9);
+      padding: 2.5rem 3rem;
+      border-radius: 18px;
+      width: 380px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(212, 175, 55, 0.1),
+        0 0 30px rgba(212, 175, 55, 0.15);
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(212, 175, 55, 0.1);
+    }
+    
+    .login-container:hover {
+      box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(212, 175, 55, 0.2),
+        0 0 40px rgba(166, 124, 82, 0.25);
+      transform: translateY(-5px);
+    }
+    
+    .logo {
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    }
+    
+    .tagline {
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      letter-spacing: 0.5px;
+      font-weight: 300;
+    }
+    
+    .input-group {
+      display: flex;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.7);
+      border: 1px solid rgba(166, 124, 82, 0.3);
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.2rem;
+      border-radius: 12px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    
+    .input-group:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
+    
+    .input-group i {
+      color: var(--accent);
+      margin-right: 12px;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    
+    .input-group input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--lighter);
+      width: 100%;
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+    
+    .input-group input::placeholder {
+      color: #bbb;
+      font-weight: 300;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--darker);
+      font-weight: 600;
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      margin-top: 0.5rem;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn:hover::after {
+      opacity: 1;
+    }
+    
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .links {
+      margin-top: 1.8rem;
+      font-size: 0.85rem;
+      color: #aaaaaa;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    
+    .links a {
+      color: var(--accent-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent-light);
+      transition: width 0.3s ease;
+    }
+    
+    .links a:hover::after {
+      width: 100%;
+    }
+    
+    .links a:hover {
+      color: var(--lighter);
+    }
+    
+    .error {
+      color: var(--error);
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      padding: 0.5rem;
+      background: rgba(244, 67, 54, 0.1);
+      border-radius: 6px;
+      border-left: 3px solid var(--error);
+      animation: fadeInUp 0.4s ease-out;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .login-container {
+        width: 90%;
+        padding: 2rem 1.5rem;
+      }
+      
+      .logo {
+        font-size: 2.2rem;
+      }
+    }
+    
+    /* Animation for form elements */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-container > * {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    .logo { animation-delay: 0.1s; }
+    .tagline { animation-delay: 0.2s; }
+    .input-group:nth-child(1) { animation-delay: 0.3s; }
+    .input-group:nth-child(2) { animation-delay: 0.4s; }
+    .input-group:nth-child(3) { animation-delay: 0.5s; }
+    .input-group:nth-child(4) { animation-delay: 0.6s; }
+    .btn { animation-delay: 0.7s; }
+    .links { animation-delay: 0.8s; }
+    .error { animation-delay: 0.9s; }
+  </style>
 </head>
 <body>
   <div class="background"></div>
@@ -35,7 +344,6 @@
         <input type="password" name="password" placeholder="Create Password" required />
       </div>
 
-   
       <button type="submit" class="btn">Register</button>
 
       <p class="error" th:if="${error}" th:text="${error}"></p>
