@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop Owner Dashboard</title>
+    <style>
+        :root {
+            --primary: #D4AF37;
+            --secondary: #A67C52;
+            --accent: #7A9CC6;
+            --dark: #121212;
+            --darker: #0A0A0A;
+            --light: #F5F5F5;
+            --gray: #2A2A2A;
+            --success: #4CAF50;
+            --warning: #FFA726;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, var(--darker), var(--gray));
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--gradient);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            width: 60%;
+            margin: 2rem auto 1.5rem auto;
+            border-radius: 20px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--darker);
+            text-shadow: 1px 1px 2px var(--light);
+        }
+
+        header h2 {
+            font-size: 1.4rem;
+            margin-top: 0.5rem;
+            color: var(--accent);
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 3rem 2rem;
+        }
+
+        .card {
+            width: 280px;
+            height: 180px;
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--gradient);
+            transform: rotate(25deg);
+            opacity: 0.05;
+        }
+
+        .card a {
+            z-index: 1;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.06);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .card:hover a {
+            color: var(--accent);
+        }
+
+        .card:hover {
+            border: 1px solid var(--primary);
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient);
+            z-index: 0;
+            border-radius: 22px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover::after {
+            opacity: 0.1;
+        }
+
+        footer {
+            background-color: var(--dark);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                width: 90%;
+                padding: 1.5rem;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            header h2 {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                width: 90%;
+                height: 160px;
+            }
+
+            .card a {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome, <span th:text="${shop.ownername}">Shop Owner</span></h1>
+    <h2>Your personalized dashboard</h2>
+</header>
+
+<div class="dashboard">
+    <div class="card">
+        <a href="/shop/upload-product">📤 Upload Product</a>
+    </div>
+    <div class="card">
+        <a href="/shop/requests">📩 See Customer Requests</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Locart • Empowering Local Shops with Style ✨
+</footer>
+
+</body>
+</html>

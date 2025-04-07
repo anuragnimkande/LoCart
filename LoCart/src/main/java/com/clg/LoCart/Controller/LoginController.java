@@ -4,7 +4,9 @@ import com.clg.LoCart.Model.User;
 import com.clg.LoCart.Model.shopowner;
 import com.clg.LoCart.Repository.ShopOwnerRepository;
 import com.clg.LoCart.Repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -70,7 +72,8 @@ public class LoginController {
     public String validate(
             @RequestParam("email") String email,
             @RequestParam("pass") String pass,
-            Model model
+            Model model,
+            HttpSession session
     ) {
         User user = userRepository.findByemail(email);
 
@@ -83,7 +86,8 @@ public class LoginController {
         if (user.getPassword().equals(pass)) {
             model.addAttribute("message", "Login Successful");
             model.addAttribute("alertType", "success");
-            return "index";
+            session.setAttribute("logged_user", user);
+            return "redirect:/dashboard";
         } else {
             model.addAttribute("message", "Incorrect Password");
             model.addAttribute("alertType", "error");
@@ -137,7 +141,10 @@ public class LoginController {
     @PostMapping("/shopowner/login")
     public String loginshop(
             @RequestParam("email") String email,
-            @RequestParam("password") String pass
+            @RequestParam("password") String pass,
+            Model model,
+            HttpSession session
+
     )
     {
 
@@ -146,7 +153,10 @@ public class LoginController {
 
             if(shop != null && pass.equals(shop.getPassword()))
             {
-                return "index";
+
+                session.setAttribute("shop", shop);
+
+                return "redirect:/shopdashboard";
             }
 
 
@@ -154,5 +164,11 @@ public class LoginController {
         return "shopownerlogin";
 
     }
+
+
+
+
+
+
 
 }

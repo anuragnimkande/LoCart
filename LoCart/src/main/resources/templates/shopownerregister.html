@@ -49,9 +49,11 @@
         <button type="button" class="btn" onclick="fetchLocation()">📍 Autofetch Location</button>
       </div>
 
-      <div class="input-group">
+      <!-- Shop Category Dropdown -->
+      <!-- Shop Category Dropdown -->
+      <div class="input-group custom-select-group">
         <i class="fas fa-list"></i>
-        <select name="category" required>
+        <select name="category" class="custom-select" required>
           <option value="" disabled selected>Select Shop Category</option>
           <option>Grocery</option>
           <option>Pharmacy</option>
@@ -65,10 +67,16 @@
         </select>
       </div>
 
-      <div class="input-group">
-        <i class="fas fa-image"></i>
-        <input type="file" name="shopImage" accept="image/*" required />
+      <!-- Image Upload -->
+      <div class="input-group custom-file-group" style="position: relative; display: flex; align-items: center; border: 1px solid gold; border-radius: 10px; padding: 8px 12px; background-color: #111;">
+        <i class="fas fa-image" style="color: #fff; margin-right: 10px;"></i>
+        <label for="shopImage" class="custom-file-label" id="file-label" style="color: black; cursor: pointer;">Upload Shop Image</label>
+        <input type="file" name="shopImage" id="shopImage" accept="image/*" required hidden />
+        <span id="file-name" class="file-name" style="color: white; margin-left: 10px;"></span>
       </div>
+
+
+
 
 
       <div class="input-group">
@@ -94,7 +102,17 @@
         alert("Geolocation is not supported by this browser.");
       }
     }
+
+    document.getElementById('shopImage').addEventListener('change', function() {
+    const fileName = this.files[0] ? this.files[0].name : "No file chosen";
+    document.getElementById('file-name').textContent = fileName;
+
+    if (this.files[0]) {
+    document.getElementById('file-label').style.display = 'none';
+  }
+  });
+
+
   </script>
 </body>
 </html>
-s

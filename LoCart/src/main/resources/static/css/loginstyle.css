@@ -132,4 +132,50 @@
     margin-top: 10px;
     font-size: 13px;
   }
-  
+  /* Custom Select Styling */
+  .custom-select-group select.custom-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    appearance: none;
+    background-color: #f9f9f9;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    color: #333;
+    transition: border 0.3s ease;
+  }
+
+  .custom-select-group select.custom-select:focus {
+    border-color: #007BFF;
+    outline: none;
+    background-color: #fff;
+  }
+
+  /* File Upload Styling */
+  .custom-file-group {
+    position: relative;
+  }
+
+  .custom-file-label {
+    background-color: #f9f9f9;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    width: 100%;
+    transition: border 0.3s ease;
+  }
+
+  .custom-file-label:hover {
+    background-color: #eee;
+  }
+
+  .file-name {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555;
+  }
