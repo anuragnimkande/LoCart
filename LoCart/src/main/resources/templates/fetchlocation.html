@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetching Your Location</title>
+    <style>
+        body {
+            background: #121212;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h2>Detecting your location...</h2>
+    <p>Please allow location access</p>
+
+    <script>
+        function success(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+    
+            console.log("Location fetched:", lat, lng); // Debug
+    
+            fetch('/save-user-location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `latitude=${lat}&longitude=${lng}`
+            }).then(() => {
+                window.location.href = '/dashboard';
+            });
+        }
+    
+        function error(err) {
+            alert("Location access is required. Please allow it and refresh.");
+        }
+    
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error, {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            });
+        } else {
+            alert("Your browser does not support location access.");
+        }
+    </script>
+    
+</body>
+</html>

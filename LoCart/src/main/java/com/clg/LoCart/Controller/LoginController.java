@@ -7,6 +7,7 @@ import com.clg.LoCart.Repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -87,7 +88,8 @@ public class LoginController {
             model.addAttribute("message", "Login Successful");
             model.addAttribute("alertType", "success");
             session.setAttribute("logged_user", user);
-            return "redirect:/dashboard";
+
+            return "fetchlocation";
         } else {
             model.addAttribute("message", "Incorrect Password");
             model.addAttribute("alertType", "error");
@@ -165,6 +167,17 @@ public class LoginController {
 
     }
 
+
+    @PostMapping("/save-user-location")
+    public ResponseEntity<Void> saveUserLocation(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            HttpSession session
+    ) {
+        session.setAttribute("user_latitude", latitude);
+        session.setAttribute("user_longitude", longitude);
+        return ResponseEntity.ok().build();
+    }
 
 
 
