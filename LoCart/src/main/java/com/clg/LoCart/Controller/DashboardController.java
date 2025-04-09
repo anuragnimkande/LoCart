@@ -1,6 +1,8 @@
 package com.clg.LoCart.Controller;
 
+import com.clg.LoCart.Model.Product;
 import com.clg.LoCart.Model.shopowner;
+import com.clg.LoCart.Repository.ProductRepository;
 import com.clg.LoCart.Repository.ShopOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,9 @@ public class DashboardController {
 
     @Autowired
     ShopOwnerRepository shopwnerrepository;
+
+    @Autowired
+    ProductRepository productrepository;
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
 
@@ -101,6 +106,45 @@ public class DashboardController {
 
     }
 
+    @GetMapping("/products")
+    public String showProducts(
+            Model model,
+            HttpSession session
+    )
+    {
+        ArrayList<shopowner> nearbyshops = (ArrayList<shopowner>) session.getAttribute("nearbyshops");
+
+        ArrayList<String> nearbyshopemails = new ArrayList<>();
+
+        for(shopowner shop: nearbyshops)
+        {
+            System.out.println(shop.getEmail());
+            nearbyshopemails.add(shop.getEmail());
+        }
+
+        ArrayList<Product> nearbyshopproducts = productrepository.findAllByshopowneremailIn(nearbyshopemails);
+
+
+        for(Product pro:nearbyshopproducts)
+        {
+
+            if(pro.getProductshopname() == null)
+            {
+                shopowner shop = shopwnerrepository.findByemail(pro.getShopowneremail());
+                String name = shop.getShopname();
+                pro.setProductshopname(name);
+            }
+            System.out.println(pro.getShopowneremail());
+            if (pro.getImage() != null) {
+                String base64 = Base64.getEncoder().encodeToString(pro.getImage());
+                pro.setBase64Image(base64);
+            }
+
+        }
+
+        model.addAttribute("products",nearbyshopproducts);
+        return "products";
+    }
 
 
 }

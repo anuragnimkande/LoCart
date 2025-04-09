@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Controller
 public class ShopDashboardController {
@@ -51,6 +52,7 @@ public class ShopDashboardController {
         pro.setShopowneremail(shop.getEmail());
         pro.setShopownerid(shop.getId());
         pro.setImage(image.getBytes());
+        pro.setCreatedAt(new Date());
 
         productRepository.save(pro);
         System.out.println("Product Saved");
