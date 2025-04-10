@@ -122,7 +122,8 @@ public class LoginController {
             @RequestParam("longitude") String longitutde,
             @RequestParam("category") String category,
             @RequestParam("shopImage") MultipartFile image,
-            @RequestParam("pass") String pass
+            @RequestParam("pass") String pass,
+            @RequestParam("phone") String phone
             ) throws IOException {
 
         shopowner shopown = new shopowner();
@@ -134,6 +135,7 @@ public class LoginController {
         shopown.setCategory(category);
         shopown.setImage(image.getBytes());
         shopown.setPassword(pass);
+        shopown.setMobile(phone);
 
         shopownerrepository.save(shopown);
 

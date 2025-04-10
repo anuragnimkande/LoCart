@@ -1,18 +1,26 @@
 package com.clg.LoCart.Controller;
 
 import com.clg.LoCart.Model.Product;
+import com.clg.LoCart.Model.Request;
 import com.clg.LoCart.Model.shopowner;
 import com.clg.LoCart.Repository.ProductRepository;
+import com.clg.LoCart.Repository.RequestRepository;
 import com.clg.LoCart.Repository.ShopOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.clg.LoCart.Model.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -25,6 +33,9 @@ public class DashboardController {
 
     @Autowired
     ProductRepository productrepository;
+
+    @Autowired
+    RequestRepository requestRepository;
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
 
@@ -144,6 +155,19 @@ public class DashboardController {
 
         model.addAttribute("products",nearbyshopproducts);
         return "products";
+    }
+
+
+
+
+
+    @GetMapping("/sendrequest")
+    public String showshop(
+            HttpSession sesion
+    )
+    {
+
+        return "sendrequest";
     }
 
 

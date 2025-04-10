@@ -25,9 +25,17 @@ public class shopowner {
     private byte[] image;
     private String password;
 
-    @Transient
-    private String mobile = "23414555555";
 
+
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     @Transient
     private String base64Image;
