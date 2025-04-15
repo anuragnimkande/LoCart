@@ -157,7 +157,7 @@
 </div>
 
 <div class="shop-container" th:if="${shops != null and !#lists.isEmpty(shops)}">
-    <div th:each="shop : ${shops}" class="shop-card" 
+    <div th:each="shop : ${shops}" class="shop-card"
          th:attr="data-shopname=${shop.shopname},
                   data-ownername=${shop.ownername},
                   data-mobile=${shop.mobile},
@@ -202,16 +202,16 @@
         const mobile = element.getAttribute('data-mobile');
         const latitude = element.getAttribute('data-latitude');
         const longitude = element.getAttribute('data-longitude');
-        
+
         document.getElementById('popupShopName').textContent = shopname;
         document.getElementById('popupOwnerName').textContent = ownername;
         document.getElementById('popupMobile').textContent = mobile;
-        
+
         // Create Google Maps URL
         const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
         const mapLink = document.getElementById('mapLink');
         mapLink.href = mapsUrl;
-        
+
         // Show popup
         document.getElementById('shopPopup').classList.add('active');
     }

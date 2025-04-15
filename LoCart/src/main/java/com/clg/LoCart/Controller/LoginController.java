@@ -58,13 +58,26 @@ public class LoginController {
     {
 
 
-            User user = new User();
-            user.setEmail(email);
-            user.setUsername(username);
-            user.setMobile(mobile);
-            user.setPassword(pass);
-            userRepository.save(user);
-            return "redirect:/login";
+            User temp = userRepository.findByemail(email);
+
+            if(temp!=null)
+            {
+                model.addAttribute("error", "User already exists with this email!");
+                System.out.println("User Exists");
+            }
+            else {
+
+
+                User user = new User();
+                user.setEmail(email);
+                user.setUsername(username);
+                user.setMobile(mobile);
+                user.setPassword(pass);
+                userRepository.save(user);
+                return "redirect:/login";
+            }
+
+            return "register";
 
 
     }
@@ -79,8 +92,7 @@ public class LoginController {
         User user = userRepository.findByemail(email);
 
         if (user == null) {
-            model.addAttribute("message", "User Not Found");
-            model.addAttribute("alertType", "error");
+            model.addAttribute("error", "User Not Foundl!");
             return "login";
         }
 
@@ -91,8 +103,7 @@ public class LoginController {
 
             return "fetchlocation";
         } else {
-            model.addAttribute("message", "Incorrect Password");
-            model.addAttribute("alertType", "error");
+            model.addAttribute("error", "Wrong Username or Password!");
             return "login";
         }
     }
@@ -123,8 +134,19 @@ public class LoginController {
             @RequestParam("category") String category,
             @RequestParam("shopImage") MultipartFile image,
             @RequestParam("pass") String pass,
-            @RequestParam("phone") String phone
+            @RequestParam("phone") String phone,
+            Model model
             ) throws IOException {
+
+
+        shopowner temp = shopownerrepository.findByemail(email);
+
+        if(temp!=null)
+        {
+            model.addAttribute("error", "ShopOwner already exists with this email!");
+            System.out.println("Shop Exists");
+            return "shopownerregister";
+        }
 
         shopowner shopown = new shopowner();
         shopown.setShopname(shopname);
@@ -183,7 +205,15 @@ public class LoginController {
 
 
 
+    @GetMapping("/logout")
+    public String logout(
+            HttpSession session
+    )
+    {
+        session.invalidate();
 
+        return "login";
+    }
 
 
 }

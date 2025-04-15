@@ -373,6 +373,7 @@
         <input type="password" name="password" placeholder="Your Password" required />
       </div>
 
+      <p class="error" th:if="${error}" th:text="${error}"></p>
       <button type="submit" class="btn">Sign In</button>
 
       <div class="links">

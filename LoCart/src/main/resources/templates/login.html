@@ -267,9 +267,14 @@
     }
 
     .error {
-      color: var(--warning);
-      margin-top: 10px;
-      font-size: 13px;
+      color: var(--error);
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      padding: 0.5rem;
+      background: rgba(244, 67, 54, 0.1);
+      border-radius: 6px;
+      border-left: 3px solid var(--error);
+      animation: fadeInUp 0.4s ease-out;
     }
 
     /* Shop Owner Button */
@@ -364,7 +369,7 @@
       <i class="fas fa-lock"></i>
       <input type="password" name="pass" placeholder="Your Password" required />
     </div>
-
+    <p class="error" th:if="${error}" th:text="${error}"></p>
     <button type="submit" class="btn">
       <span>Sign In</span>
     </button>
