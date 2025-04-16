@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class ShopDashboardController {
@@ -63,6 +65,22 @@ public class ShopDashboardController {
 
 
 
+
+
+    @GetMapping("/shopproducts")
+    public String showShopProducts(HttpSession session, Model model) {
+        shopowner shop = (shopowner) session.getAttribute("shop");
+        List<Product> products = productRepository.findAllByshopowneremail(shop.getEmail());
+
+        for (Product product : products) {
+            if (product.getImage() != null) {
+                product.setBase64Image(Base64.getEncoder().encodeToString(product.getImage()));
+            }
+        }
+        model.addAttribute("shop",shop);
+        model.addAttribute("products", products);
+        return "shopproducts";
+    }
 
 
 }

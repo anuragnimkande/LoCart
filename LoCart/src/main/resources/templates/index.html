@@ -5,183 +5,602 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Locart Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --primary: #D4AF37;
+            --primary-light: #e8c96a;
             --secondary: #A67C52;
+            --secondary-light: #c99d7a;
             --accent: #7A9CC6;
+            --accent-light: #a5c1e6;
             --dark: #121212;
             --darker: #0A0A0A;
             --light: #F5F5F5;
+            --lighter: #FFFFFF;
             --gray: #2A2A2A;
+            --gray-light: #3D3D3D;
             --success: #4CAF50;
             --warning: #FFA726;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-light: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: var(--gradient);
-            color: var(--dark);
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Enhanced Navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--gradient);
-            padding: 15px 30px;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            background: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
         }
 
         .nav-links {
-            list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 1.5rem;
+            list-style: none;
         }
 
         .nav-links li a {
-            color: white;
+            color: var(--light);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-links li a:hover {
             color: var(--primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-links li a.active {
+            color: var(--primary);
+        }
+
+        .nav-links li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
         }
 
         .user-info {
-            font-size: 1rem;
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: bold;
+            font-size: 1.1rem;
         }
 
         .logout-btn {
-            margin-left: 10px;
-            padding: 6px 12px;
-            background-color: var(--dark);
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .logout-btn:hover {
-            background-color: var(--primary);
-            color: var(--dark);
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            padding: 40px;
-        }
-
-        .card {
-            background: var(--light);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .card i {
-            font-size: 2.5rem;
+            background: rgba(212, 175, 55, 0.2);
             color: var(--primary);
-            margin-bottom: 10px;
         }
 
-        .card h3 {
-            margin: 10px 0 5px;
-            font-size: 1.4rem;
+        /* Main Dashboard Layout */
+        .dashboard {
+            flex: 1;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
         }
 
-        .card p {
-            color: var(--gray);
-            font-size: 0.95rem;
+        /* Sidebar */
+        .sidebar {
+            background: var(--gray);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 6rem;
         }
 
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .welcome-banner {
+            background: var(--gradient);
+            color: var(--dark);
+            padding: 2rem;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .welcome-banner p {
+            font-size: 1rem;
+            max-width: 70%;
+            position: relative;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--gray);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(212, 175, 55, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .stat-title {
+            color: var(--light);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* New Feature Cards */
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--gray);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(212, 175, 55, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            color: var(--light);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .feature-link {
+            margin-top: auto;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-link:hover {
+            color: var(--primary-light);
+            gap: 0.75rem;
+        }
+
+        /* Community Spotlight */
+        .community-spotlight {
+            background: var(--gray);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .spotlight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .spotlight-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .spotlight-content {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .spotlight-item {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .spotlight-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .spotlight-item-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .spotlight-item-description {
+            color: var(--light);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
         footer {
             text-align: center;
-            padding: 15px;
-            background: var(--light);
+            padding: 1.5rem;
+            background: var(--darker);
+            color: var(--light);
             font-size: 0.9rem;
-            color: var(--gray);
-            margin-top: 50px;
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .spotlight-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-banner p {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
-
 <nav class="navbar">
     <div class="logo">Locart</div>
     <ul class="nav-links">
-        <li><a th:href="@{/dashboard}">Dashboard</a></li>
+        <li><a th:href="@{/dashboard}" class="active">Dashboard</a></li>
         <li><a th:href="@{/sendrequest}">Send Request</a></li>
         <li><a th:href="@{/your_requests}">Your Requests</a></li>
         <li><a th:href="@{/nearbyshops}">Nearby Shops</a></li>
         <li><a th:href="@{/products}">Products</a></li>
     </ul>
     <div class="user-info">
-        Welcome, <span th:text="${user.username}">User</span>
-        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+        <div class="user-avatar" th:text="${user.username.substring(0, 1).toUpperCase()}">U</div>
+        <button class="logout-btn" onclick="window.location.href='/logout'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
     </div>
 </nav>
 
-<main class="dashboard">
-    <div class="card">
-        <i class="fas fa-store"></i>
-        <h3>Nearby Shops</h3>
-        <p>Explore real-time inventory from nearby stores.</p>
-    </div>
-    <div class="card">
-        <i class="fas fa-search"></i>
-        <h3>Product Requests</h3>
-        <p>Send custom item requests to local vendors.</p>
-    </div>
-    <div class="card">
-        <i class="fas fa-comments"></i>
-        <h3>Community Reviews</h3>
-        <p>Read and leave feedback to help others.</p>
-    </div>
-    <div class="card">
-        <i class="fas fa-image"></i>
-        <h3>Image Search</h3>
-        <p>Upload an image to find matching products nearby.</p>
-    </div>
-    <div class="card">
-        <i class="fas fa-star"></i>
-        <h3>Shop Ratings</h3>
-        <p>Rate and review shops for better local commerce.</p>
-    </div>
-    <div class="card">
-        <i class="fas fa-user-shield"></i>
-        <h3>Moderation</h3>
-        <p>NLP-based abusive word detection for a safe space.</p>
-    </div>
-</main>
+<div class="dashboard">
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Quick Actions</h3>
+            <div class="quick-actions">
+                <a th:href="@{/sendrequest}" class="action-btn">
+                    <i class="fas fa-bolt"></i>
+                    <span>Quick Request</span>
+                </a>
+                <a th:href="@{/nearbyshops}" class="action-btn">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Find Shops</span>
+                </a>
+                <a th:href="@{/products}" class="action-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Search Products</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Your Stats</h3>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
+                <div class="stat-value">24</div>
+                <div class="stat-title">Completed Requests</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section class="welcome-banner">
+            <h2>Welcome back, <span th:text="${user.username}">User</span>!</h2>
+            <p>Discover local products and connect with nearby shops in your community.</p>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                </div>
+                <div class="stat-value" th:text="${#lists.size(shops)}">0</div>
+                <div class="stat-title">Shops Nearby</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-value" th:text="${pendingCount}">0</div>
+                <div class="stat-title">Pending Requests</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="stat-value" th:text="${acceptedShopCount}">0</div>
+                <div class="stat-title">Accepted by Shops</div>
+            </div>
+
+        </section>
+
+        <section class="feature-cards">
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="feature-title">Quotes</h3>
+                </div>
+                <p class="feature-description">
+                    When you support local, you’re not just buying a product—you’re building a relationship.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="feature-title">Quotes</h3>
+                </div>
+                <p class="feature-description">
+                    When you buy from a small business, you're not helping a CEO buy a third vacation home. You're helping a little girl get dance lessons, a little boy get his team jersey, and parents put food on the table.
+                </p>
+
+            </div>
+        </section>
+
+
+    </main>
+</div>
 
 <footer>
-    &copy; 2025 Locart - All Rights Reserved
+    Making Your Life Better!!!!!
 </footer>
-
 </body>
 </html>

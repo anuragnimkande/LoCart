@@ -2,222 +2,538 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Shop Owner Dashboard</title>
+    <title>Shop Owner Dashboard | Locart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --primary: #D4AF37;
+            --primary-light: #e8c96a;
             --secondary: #A67C52;
+            --secondary-light: #c99d7a;
             --accent: #7A9CC6;
+            --accent-light: #a5c1e6;
             --dark: #121212;
             --darker: #0A0A0A;
             --light: #F5F5F5;
+            --lighter: #FFFFFF;
             --gray: #2A2A2A;
+            --gray-light: #3D3D3D;
             --success: #4CAF50;
             --warning: #FFA726;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-light: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--dark);
+            background: var(--dark);
             color: var(--light);
+            min-height: 100vh;
         }
 
+        /* Header */
         .header {
             background: var(--gradient);
-            padding: 1.2rem 2rem;
+            padding: 1.5rem 2rem;
             text-align: center;
-            font-size: 2.2rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--darker);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        /* Welcome Section */
+        .welcome-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
 
         .welcome {
-            margin: 2rem auto;
-            text-align: center;
-            font-size: 1.5rem;
-            width: fit-content;
-            background-color: var(--gray);
-            padding: 0.8rem 2rem;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-            color: var(--primary);
+            background: var(--gray);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
         }
 
-        .dashboard {
+        .welcome h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .shop-info {
             display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--gray);
+            padding: 1rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+        }
+
+        .shop-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
             justify-content: center;
+            color: var(--dark);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .shop-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .shop-details p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Dashboard Cards */
+        .dashboard {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            flex-wrap: wrap;
-            padding: 2rem;
         }
 
         .card {
-            width: 280px;
-            height: 150px;
             background: var(--gray);
-            border-radius: 20px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
         }
 
-        .card a, .card button {
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-decoration: none;
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
             color: var(--primary);
-            background: transparent;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient);
+            color: var(--dark);
             border: none;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .card a:hover, .card button:hover {
-            color: var(--accent);
+        .card-btn:hover {
+            background: var(--gradient-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(166, 124, 82, 0.3);
         }
 
-        /* Modal Styling */
-        .modal {
-            display: none;
+        /* Modal */
+        .modal-overlay {
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .modal-content {
             background: var(--gray);
-            color: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 400px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
             position: relative;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            animation: modalFadeIn 0.4s ease-out;
         }
 
-        .modal-content h2 {
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
             color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .modal-content label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: bold;
+        .modal-title i {
+            font-size: 1.2rem;
         }
 
-        .modal-content input,
-        .modal-content textarea {
-            width: 100%;
-            padding: 0.6rem;
-            margin-top: 0.3rem;
-            border-radius: 8px;
-            border: none;
-            background-color: var(--darker);
-            color: var(--light);
-            font-size: 1rem;
-        }
-
-        .modal-content .submit-btn {
-            margin-top: 1.5rem;
-            background: var(--gradient);
-            border: none;
-            color: var(--darker);
-            font-weight: bold;
-            padding: 0.8rem 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .modal-content .submit-btn:hover {
-            background: var(--success);
-            color: var(--light);
-        }
-
-        .close {
+        .close-btn {
             position: absolute;
-            right: 15px;
-            top: 10px;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light);
             font-size: 1.5rem;
             cursor: pointer;
+            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .file-input-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .file-input-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .file-input-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            background: var(--gradient);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--gradient-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(166, 124, 82, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
+
+            .welcome h1 {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">Locart Shop Dashboard</div>
+<div class="header">Locart Shop Dashboard</div>
 
+<div class="welcome-container">
     <div class="welcome">
-        Welcome, <span th:text="${shop.ownername}">Shop Owner</span>!
+        <h1>Welcome back, <span th:text="${shop.ownername}">Shop Owner</span>!</h1>
+        <p>Manage your shop and connect with customers</p>
     </div>
 
-    <div class="dashboard">
-        <div class="card">
-            <button onclick="openModal()">📤 Upload Product</button>
-        </div>
-        <div class="card">
-            <a href="/seerequests">📩 See Customer Requests</a>
+    <div class="shop-info">
+        <div class="shop-avatar" th:text="${shop.shopname.substring(0, 1).toUpperCase()}">S</div>
+        <div class="shop-details">
+            <h3 th:text="${shop.shopname}">Shop Name</h3>
+            <p th:text="${shop.category}">Shop Category</p>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Upload Product</h2>
+<div class="dashboard">
+    <div class="card">
+        <div class="card-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <h3 class="card-title">Upload Product</h3>
+        <p class="card-description">Add new products to your shop inventory</p>
+        <button class="card-btn" onclick="openModal()">
+            <i class="fas fa-plus"></i> Add Product
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">
+            <i class="fas fa-inbox"></i>
+        </div>
+        <h3 class="card-title">Customer Requests</h3>
+        <p class="card-description">View and respond to customer product requests</p>
+        <a href="/seerequests" class="card-btn">
+            <i class="fas fa-eye"></i> View Requests
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">
+            <i class="fas fa-boxes"></i>
+        </div>
+        <h3 class="card-title">Your Products</h3>
+        <p class="card-description">Manage your existing product listings</p>
+        <a href="/shopproducts" class="card-btn">
+            <i class="fas fa-list"></i> View Products
+        </a>
+    </div>
+
+
+</div>
+
+<!-- Upload Product Modal -->
+<div class="modal-overlay" id="uploadModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Upload Product
+            </h3>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
             <form th:action="@{/shop/upload-product}" method="post" enctype="multipart/form-data">
-                <label for="name">Product Name:</label>
-                <input type="text" name="name" id="name" required>
+                <div class="form-group">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input type="text" name="name" id="name" class="form-input" placeholder="Enter product name" required>
+                </div>
 
-                <label for="price">Price:</label>
-                <input type="number" name="price" id="price" step="0.01" required>
+                <div class="form-group">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" name="price" id="price" class="form-input" placeholder="Enter price" step="0.01" required>
+                </div>
 
-                <label for="description">Description:</label>
-                <textarea name="description" id="description" required></textarea>
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" id="description" class="form-input" rows="4" placeholder="Enter product description" required></textarea>
+                </div>
 
-                <label for="image">Product Image:</label>
-                <input type="file" name="image" id="image" accept="image/*" required>
+                <div class="form-group">
+                    <label class="form-label">Product Image</label>
+                    <label class="file-input-container">
+                        <i class="fas fa-camera file-input-icon"></i>
+                        <span class="file-input-text">Choose product image</span>
+                        <input type="file" name="image" id="image" accept="image/*" required>
+                    </label>
+                </div>
 
-                <button type="submit" class="submit-btn">Upload</button>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-upload"></i> Upload Product
+                </button>
             </form>
         </div>
     </div>
+</div>
 
-    <script>
+<script>
         function openModal() {
-            document.getElementById('uploadModal').style.display = 'flex';
+            document.getElementById('uploadModal').classList.add('active');
         }
 
         function closeModal() {
-            document.getElementById('uploadModal').style.display = 'none';
+            document.getElementById('uploadModal').classList.remove('active');
         }
 
-        window.onclick = function (event) {
-            const modal = document.getElementById('uploadModal');
-            if (event.target === modal) {
-                modal.style.display = "none";
+        // Close modal when clicking outside
+        document.getElementById('uploadModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
             }
-        }
+        });
     </script>
 
 </body>

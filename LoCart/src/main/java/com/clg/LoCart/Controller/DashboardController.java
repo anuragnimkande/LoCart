@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class DashboardController {
@@ -44,8 +41,7 @@ public class DashboardController {
         double userlat = (Double) session.getAttribute("user_latitude");
         double userlong = (Double) session.getAttribute("user_longitude");
 
-        System.out.println(userlat);
-        System.out.println(userlong);
+
 
         List<shopowner> allshops = shopwnerrepository.findAll();
         List<shopowner> nearbyshops = new ArrayList<>();
@@ -75,6 +71,31 @@ public class DashboardController {
         }
 
         model.addAttribute("user", user);
+        model.addAttribute("shops", nearbyshops);
+
+
+        List<Request> allRequests = requestRepository.findAllByuseremail(user.getEmail());
+
+        // Filter pending requests
+        List<Request> pendingRequests = allRequests.stream()
+                .filter(r -> r.getAcceptedShops() == null || r.getAcceptedShops().isEmpty())
+                .toList();
+
+        model.addAttribute("pendingCount", pendingRequests.size());
+
+
+
+        List<Request> userRequests = requestRepository.findAllByuseremail(user.getEmail());
+
+        // Count how many *distinct* shops have accepted requests
+        Set<String> uniqueAcceptedShopEmails = new HashSet<>();
+        for (Request req : userRequests) {
+            uniqueAcceptedShopEmails.addAll(req.getAcceptedShops());
+        }
+
+        int acceptedCount = uniqueAcceptedShopEmails.size();
+
+        model.addAttribute("acceptedShopCount", acceptedCount);
         return "index"; // loads index.html from templates
     }
 
@@ -163,9 +184,13 @@ public class DashboardController {
 
     @GetMapping("/sendrequest")
     public String showshop(
-            HttpSession sesion
+            HttpSession sesion,
+            Model model
     )
     {
+
+        User user = (User) sesion.getAttribute("logged_user");
+        model.addAttribute("user",user);
 
         return "sendrequest";
     }

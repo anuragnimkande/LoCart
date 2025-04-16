@@ -3,54 +3,204 @@
 <head>
     <title>Send Product Request</title>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --primary: #D4AF37;
+            --primary-light: #e8c96a;
             --secondary: #A67C52;
+            --secondary-light: #c99d7a;
             --accent: #7A9CC6;
-            --light: #f5f5f5;
+            --accent-light: #a5c1e6;
             --dark: #121212;
-            --shadow: rgba(0, 0, 0, 0.1);
+            --darker: #0A0A0A;
+            --light: #F5F5F5;
+            --lighter: #FFFFFF;
+            --gray: #2A2A2A;
+            --gray-light: #3D3D3D;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-light: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: var(--light);
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Navbar - Consistent with dashboard */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: var(--primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-links li a.active {
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--primary);
+        }
+
+        /* Main Container */
         .container {
             max-width: 600px;
-            margin: 50px auto;
-            padding: 40px;
-            background-color: white;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            background: var(--gray);
             border-radius: 16px;
-            box-shadow: 0 8px 20px var(--shadow);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
             animation: fadeIn 0.7s ease-in;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            transform: rotate(30deg);
+            z-index: -1;
         }
 
         h2 {
             text-align: center;
-            color: var(--dark);
-            margin-bottom: 30px;
-            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            font-size: 1.8rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--gradient);
+            margin: 0.5rem auto 0;
+            border-radius: 3px;
         }
 
         form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--primary-light);
+            font-size: 0.95rem;
         }
 
         input[type="text"],
         textarea,
         select,
-        input[type="file"] {
-            padding: 14px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+        .file-input-container {
+            padding: 0.9rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
             transition: all 0.3s ease;
         }
 
@@ -58,33 +208,78 @@
         textarea:focus,
         select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 5px var(--primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
             outline: none;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        button {
-            padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Custom file input */
+        .file-input-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .file-input-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .file-input-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .file-input-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            background: var(--gradient);
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
         }
 
-        button:hover {
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        .submit-btn:hover {
+            background: var(--gradient-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(166, 124, 82, 0.3);
         }
 
         .note {
-            font-size: 14px;
-            color: #555;
+            font-size: 0.85rem;
+            color: var(--light);
+            opacity: 0.7;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 1.5rem;
+            line-height: 1.5;
         }
 
+        /* Animation */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -95,40 +290,95 @@
                 transform: translateY(0);
             }
         }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+<nav class="navbar">
+    <div class="logo">Locart</div>
+    <ul class="nav-links">
+        <li><a th:href="@{/dashboard}">Dashboard</a></li>
+        <li><a th:href="@{/sendrequest}" class="active">Send Request</a></li>
+        <li><a th:href="@{/your_requests}">Your Requests</a></li>
+        <li><a th:href="@{/nearbyshops}">Nearby Shops</a></li>
+        <li><a th:href="@{/products}">Products</a></li>
+    </ul>
+    <div class="user-info">
+        <div class="user-avatar" th:text="${user.username.substring(0, 1).toUpperCase()}">U</div>
+        <button class="logout-btn" onclick="window.location.href='/logout'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+</nav>
 
 <div class="container">
     <h2>Send a Product Request</h2>
 
     <form th:action="@{/sendrequest}" method="post" enctype="multipart/form-data">
-        <input type="text" name="item" placeholder="Enter product name" required />
+        <div class="form-group">
+            <label for="item">Product Name</label>
+            <input type="text" id="item" name="item" placeholder="What product are you looking for?" required />
+        </div>
 
-        <textarea name="description" rows="4" placeholder="Write a short description" required></textarea>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Provide details about the product (size, brand, quantity, etc.)" required></textarea>
+        </div>
 
-        <select name="category" required>
-            <option value="" disabled selected>Choose a category</option>
-            <option value="Grocery">Grocery</option>
-            <option value="Pharmacy">Pharmacy</option>
-            <option value="Bakery">Bakery</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Stationery">Stationery</option>
-            <option value="Hardware">Hardware</option>
-            <option value="Vegetable & Fruits">Vegetable & Fruits</option>
-            <option value="Restaurant or FoodStall">Restaurant or FoodStall</option>
-            <option value="Other">Other</option>
-           
-        </select>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option value="Grocery">Grocery</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Bakery">Bakery</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Stationery">Stationery</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Vegetable & Fruits">Vegetable & Fruits</option>
+                <option value="Restaurant or FoodStall">Restaurant or FoodStall</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
 
-        <input type="file" name="photo" accept="image/*" required />
+        <div class="form-group">
+            <label>Product Photo</label>
+            <label class="file-input-container">
+                <i class="fas fa-camera file-input-icon"></i>
+                <span class="file-input-text">Choose a photo of the product</span>
+                <input type="file" name="photo" accept="image/*" required />
+            </label>
+        </div>
 
-        <button type="submit">Submit Request</button>
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-paper-plane"></i> Submit Request
+        </button>
     </form>
 
-    <div class="note">Your request will be visible to nearby shops of this category.</div>
+    <div class="note">Your request will be visible to nearby shops in this category. Shops can respond with availability and pricing.</div>
 </div>
-
 </body>
 </html>

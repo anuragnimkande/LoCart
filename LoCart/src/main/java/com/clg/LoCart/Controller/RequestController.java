@@ -79,7 +79,16 @@ public class RequestController {
         Point shopLocation = new Point(longitude, latitude); // Remember: (lon, lat)
         Distance radius = new Distance(5, Metrics.KILOMETERS); // 5km
 
-        List<Request> nearbyRequests = requestRepository.findByLocationNear(shopLocation, radius);
+        List<Request> allnear = requestRepository.findByLocationNear(shopLocation, radius);
+        List<Request> nearbyRequests = new ArrayList<>();
+
+        for(Request req:allnear)
+        {
+            if(shop.getCategory().equals(req.getCategory()) || req.getCategory().equals("Other"))
+            {
+                nearbyRequests.add(req);
+            }
+        }
 
         for(Request neareq: nearbyRequests)
         {
